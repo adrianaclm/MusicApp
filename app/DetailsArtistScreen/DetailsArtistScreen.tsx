@@ -46,33 +46,30 @@ const DetailsArtistScreen = () => {
           name,
           mbid,
           url,
-          image = {}, // Handle optional image object
+          image = {}, 
           streamable,
           stats: { listeners, plays },
-          similar = [], // Handle optional similar artists array
-          tags = [], // Handle optional tags array
-          bio: { content }, // Extract bio content
+          similar = [], 
+          tags = [],
+          bio: { content }, 
         } = artist;
 
         const formattedArtistInfo: formattedArtistInfo = {
           name,
           mbid,
           url,
-          image: image.size ? image[image.size] : null, // Extract image URL based on size
+          image: image.size ? image[image.size] : null, 
           streamable,
           listeners,
           plays,
-          // similarArtists: similar.map((similarArtist: { name: any; }) => similarArtist.name),
-          // tags: tags.map((tag: { name: any; }) => tag.name),
           biography: content,
         };
         setArtistInfo(formattedArtistInfo);
-        console.log(formattedArtistInfo);
         return formattedArtistInfo;
       }
     } catch (error) {
       console.error("Error fetching artist info:", error);
-      throw error; // Re-throw for proper error handling
+      throw error; 
     }
   }
 

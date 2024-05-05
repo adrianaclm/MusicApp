@@ -3,11 +3,10 @@ import { ScreenContainer } from "../src/components";
 import React, { useEffect, useState } from "react";
 import * as Font from "expo-font";
 import { router } from "expo-router";
-import { PlayState } from "../src/contexts";
 import AppMultiContext from "../AppMultiContext";
 
 const AppContainer = () => {
-  const ContextProviders = [<PlayState />];
+  const ContextProviders = [<></>];
 
   return <AppMultiContext providers={ContextProviders}></AppMultiContext>;
 };
@@ -56,7 +55,7 @@ const Page = () => {
 
   return (
     <AvoidingView>
-      <AppContainer />
+      {/* <AppContainer /> */}
     </AvoidingView>
   );
 };

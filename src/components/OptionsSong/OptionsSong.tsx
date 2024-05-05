@@ -3,8 +3,12 @@ import { View, TouchableOpacity } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../../utils";
 
-const OptionsSong = () => {
-  const [colorHeart, setColorHeart] = useState<boolean>(false);
+interface OptionsSongProps {
+  setColorHeart: () => void;
+  colorHeart: boolean;
+}
+
+const OptionsSong = ({ colorHeart, setColorHeart }: OptionsSongProps) => {
 
   return (
     <View
@@ -17,11 +21,11 @@ const OptionsSong = () => {
         marginBottom: 10,
       }}
     >
-      <TouchableOpacity onPress={() => setColorHeart(!colorHeart)}>
+      <TouchableOpacity onPress={() => setColorHeart()}>
         <Ionicons
           name="heart"
           size={30}
-          color={colorHeart ? Colors.subtitle : "red"}
+          color={colorHeart ? "red" : Colors.subtitle}
         />
       </TouchableOpacity>
       <TouchableOpacity>

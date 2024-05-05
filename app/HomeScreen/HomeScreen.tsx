@@ -1,17 +1,14 @@
-import { View, FlatList, Text, Pressable } from "react-native";
+import { View, FlatList, Text } from "react-native";
 import {
   HorizontalScroll,
   NavigationBar,
-  ScreenContainer,
   Searcher,
   SongBox,
 } from "../../src/components";
 import { router } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { PlayContext } from "../../src/contexts";
-import { PlayProvider } from "../../src/contexts/context";
 import { Audio } from "expo-av";
 
 export interface Root {
@@ -74,7 +71,6 @@ export interface Root2 {
 
 const HomeScreen = () => {
   ScreenOrientation.unlockAsync();
-  // const { setIsPlaying, isPlaying } = useContext(PlayContext);
   const [orientation, setOrientation] = useState<any>();
   const [isLandscape, setIsLandscape] = useState(false);
   useEffect(() => {
@@ -173,27 +169,27 @@ const HomeScreen = () => {
   }, []);
 
   const [sound, setSound] = useState<Audio.Sound | null>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  // const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  const playSound = async () => {
-    try {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../../src/assets/music/prueba.mp3")
-      );
-      setSound(sound);
-      await sound.playAsync();
-      setIsPlaying(true);
-    } catch (error) {
-      console.log("Error playing sound:", error);
-    }
-  };
+  // const playSound = async () => {
+  //   try {
+  //     const { sound } = await Audio.Sound.createAsync(
+  //       require("../../src/assets/music/prueba.mp3")
+  //     );
+  //     setSound(sound);
+  //     await sound.playAsync();
+  //     setIsPlaying(true);
+  //   } catch (error) {
+  //     ("Error playing sound:", error);
+  //   }
+  // };
 
-  const stopSound = async () => {
-    if (sound) {
-      await sound.stopAsync();
-      setIsPlaying(false);
-    }
-  };
+  // const stopSound = async () => {
+  //   if (sound) {
+  //     await sound.stopAsync();
+  //     setIsPlaying(false);
+  //   }
+  // };
 
   useEffect(() => {
     return sound ? () => sound.unloadAsync() : undefined;
@@ -214,22 +210,11 @@ const HomeScreen = () => {
     <>
       <NavigationBar navigation={navigation} />
       <Searcher placeholder={placeholder} />
-      <>
-        <Pressable onPress={stopSound}>
-          <Text>parar </Text>
-        </Pressable>
-      </>
       <HorizontalScroll
         handleItemPress={handleItemPress}
         selectedItem={selectedItem}
         items={items}
       />
-      <>
-        <Pressable onPress={isPlaying ? stopSound : playSound}>
-          <Text>play</Text>
-        </Pressable>
-      </>
-
       <FlatList
         key={key}
         initialNumToRender={1}

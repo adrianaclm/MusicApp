@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, Image, View } from "react-native";
+import { Text, TouchableOpacity, Image } from "react-native";
 import { OptionsSong, PlayerSong, ScreenContainer } from "../../src/components";
 import { router, useLocalSearchParams } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../../src/utils";
 import { Fonts, userProfile } from "../../src/assets";
 import axios from "axios";
+import { saveData } from "../../src/utils/AsyncStorage";
 
 export interface formattedArtistInfo {
   biography: string;
@@ -58,11 +59,9 @@ export interface Wiki {
 
 const DetailsSongScreen = () => {
   const [artistInfo, setArtistInfo] = useState<formattedArtistInfo>();
+  const [colorHeart, setColorHeart] = useState<boolean>(false);
 
   const navigation = () => router.back();
-
-  const [colorHeart, setColorHeart] = useState<boolean>(false);
-  const [pause, setPause] = useState<boolean>(false);
 
   const LASTFM_API_URL = "https://ws.audioscrobbler.com/2.0/";
   const apiKey = "ea1d26aaa70940854e8b51b5aff829ea";
@@ -107,7 +106,6 @@ const DetailsSongScreen = () => {
           playcount,
           artist: artistInfo,
           album,
-          toptags = [],
           wiki = {},
         } = trackInfo;
 
@@ -137,8 +135,6 @@ const DetailsSongScreen = () => {
             content: wiki.content,
           },
         };
-
-        // console.log(formattedTrackInfo)
         setInfoTrack(formattedTrackInfo);
         return formattedTrackInfo;
       }
@@ -152,9 +148,6 @@ const DetailsSongScreen = () => {
 
   const [showFullText, setShowFullText] = useState(false);
 
-  const handleToggleText = () => {
-    setShowFullText(!showFullText);
-  };
   const params: any = useLocalSearchParams();
 
   useEffect(() => {
@@ -166,6 +159,15 @@ const DetailsSongScreen = () => {
       pathname: "/DetailsArtistScreen/DetailsArtistScreen",
       params: { id: params.artist },
     });
+
+    const [data, setData] = useState([]);
+
+  const handlePress = () => {
+    const newData: any = [...data, { key: {infoTrack} }];
+    setData(newData);
+    saveData("myArray", newData);
+  };
+
 
   return (
     <ScreenContainer>
@@ -206,7 +208,7 @@ const DetailsSongScreen = () => {
           paddingHorizontal: 15,
         }}
       >
-        {infoTrack?.artist.name}
+        Artist: {infoTrack?.artist.name}
       </Text>
       <Text
         numberOfLines={showFullText ? 0 : MAX_LINES_TO_SHOW}
@@ -219,7 +221,7 @@ const DetailsSongScreen = () => {
           paddingHorizontal: 15,
         }}
       >
-        {infoTrack?.wiki.published}
+        Fecha de Lanzamiento: {infoTrack?.wiki.published}
       </Text>
 
       <TouchableOpacity onPress={() => navigationArtist}>
@@ -240,7 +242,13 @@ const DetailsSongScreen = () => {
         </Text>
       </TouchableOpacity>
 
-      <OptionsSong />
+      <OptionsSong
+        setColorHeart={() => {
+          setColorHeart(!colorHeart);
+          handlePress();
+        }}
+        colorHeart={colorHeart}
+      />
       <PlayerSong />
     </ScreenContainer>
   );

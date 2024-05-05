@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Colors, width } from "../../utils";
 import { TouchableOpacity, View, Text, StyleSheet, Image } from "react-native";
 import { Fonts, userProfile } from "../../assets";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Root2 } from "../../../app/HomeScreen/HomeScreen";
-import { PlayProvider } from "../../../src/contexts/context";
 import { Audio } from "expo-av";
 
 interface SongBoxProps {
@@ -41,12 +40,7 @@ const SongBox = ({
     }
   };
 
-  // useEffect(() => {
-  //   return sound ? () => sound.unloadAsync() : undefined;
-  // }, [sound]);
-
   return (
-    <PlayProvider>
       <View style={styles.container}>
         <Text style={styles.text}>#{track.key + 1}</Text>
         <TouchableOpacity onPress={() => navigationSong(track.artist)}>
@@ -97,7 +91,6 @@ const SongBox = ({
           />
         </TouchableOpacity>
       </View>
-    </PlayProvider>
   );
 };
 
